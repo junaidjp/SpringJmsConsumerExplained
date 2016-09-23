@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:amq="http://activemq.apache.org/schema/core"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/jms 
+                           http://www.springframework.org/schema/jms/spring-jms.xsd
+                           http://activemq.apache.org/schema/core 
+                           http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+	<context:component-scan base-package="com.junaid.training.spring" />
+
+
+	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL">
+			<value>tcp://localhost:61616</value>
+		</property>
+	</bean>
+
+
+
+
+
+
+
+
+	<bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="stockInfoQueue" />
+	</bean>
+
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="defaultDestination" ref="destination" />
+	</bean>
+
+
+
+<!-- Listener Asynchronous
+    <bean id="orderListener" class="it.samplejms.spring.OrderListener">
+        <property name="errorHandler" ref="someHandler"/>
+    </bean>
+ 
+    <jms:listener-container concurrency="5-10">
+                 <jms:listener destination="OrderQueue" ref="orderListener"/>
+    </jms:listener-container>
+     <bean id="orderReceiver" class="com.junaid.training.spring.consumer.StockReader" />
+-->
+<!-- Receive Synchronous -->
+   
+        
+        
+
+
+
+	<bean id="stockreciever" class="com.junaid.training.spring.consumer.StockReader" />
+	
+
+
+
+</beans>
